@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "pt.isel.pdm.gomoku_ee"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "pt.isel.pdm.gomoku_ee"
