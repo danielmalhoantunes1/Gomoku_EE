@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
 
-class MainActivity : ComponentActivity() {
+class GameActivity : ComponentActivity() {
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, MainActivity::class.java)
@@ -35,12 +35,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Gomoku_EETheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(
-                        onGameRequested = { GameActivity.navigateTo(this) },
+                    GameScreen(
+                        //onGameRequested = { GameActivity.navigateTo(this) },
                         onFavouriteRequested = { FavouriteActivity.navigateTo(this) }
                     )
                 }
@@ -50,10 +51,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(
-                onGameRequested: () -> Unit = { },
-                onFavouriteRequested: () -> Unit = { }
-                ) {
+fun GameScreen(
+    onGameRequested: () -> Unit = { },
+    onFavouriteRequested: () -> Unit = { }
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,27 +65,16 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MakeButton("Game") { onGameRequested() }
+        //MakeButton("Game") { onGameRequested() }
         MakeButton("Favourite Games") { onFavouriteRequested() }
     }
 
 }
 
-@Composable
-fun MakeButton(text: String, size: Dp = 200.dp, onClick: () -> Unit) {
-    Button(
-        modifier = Modifier
-            .width(size),
-        onClick = onClick
-    ) {
-        Text(text = text)
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GamePreview() {
     Gomoku_EETheme {
-        MainScreen()
+        GameScreen()
     }
 }
