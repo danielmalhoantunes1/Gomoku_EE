@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,12 +33,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.isel.pdm.gomoku_ee.GamePlayInputModel
-import pt.isel.pdm.gomoku_ee.MainActivity
 import java.util.UUID
 
 @Composable
 fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
