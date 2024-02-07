@@ -9,16 +9,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import pt.isel.pdm.gomoku_ee.GomokuApplication
 import pt.isel.pdm.gomoku_ee.MainActivity
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
+import java.util.UUID
 
 class GameActivity : ComponentActivity() {
-    private val app by lazy { application as GomokuApplication }
     private val viewModel by viewModels<GameViewModel>(
-        factoryProducer = { GameViewModel.factory(app.gamesService) }
+        factoryProducer = { GameViewModel.factory() }
     )
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -35,8 +39,8 @@ class GameActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     GameScreen(
-                        onPlay = {/*viewModel.updateGame(it, userId, gameId, token)*/},
-                        onMainRequested = { MainActivity.navigateTo(this) },
+                        game = viewModel.gameBoard,
+                        onPlay = { input -> viewModel.play(input, viewModel.gameBoard) }
                     )
                 }
             }
@@ -48,6 +52,6 @@ class GameActivity : ComponentActivity() {
 @Composable
 fun GamePreview() {
     Gomoku_EETheme {
-        GameScreen(onPlay = {})
+        GameActivity()
     }
 }

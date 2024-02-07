@@ -33,14 +33,12 @@ class FavouriteActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Gomoku_EETheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FavouriteScreen(
-                        //onGameRequested = { GameActivity.navigateTo(this) },
-                        //onFavouriteRequested = { FavouriteActivity.navigateTo(this) }
+                        onMainRequested = { MainActivity.navigateTo(this) }
                     )
                 }
             }
@@ -50,8 +48,7 @@ class FavouriteActivity : ComponentActivity() {
 
 @Composable
 fun FavouriteScreen(
-    onGameRequested: () -> Unit = { },
-    onFavouriteRequested: () -> Unit = { }
+    onMainRequested: () -> Unit = { }
 ) {
     Column(
         modifier = Modifier
@@ -63,8 +60,7 @@ fun FavouriteScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //MakeButton("Game") { onGameRequested() }
-        MakeButton("Favourite Games") { onFavouriteRequested() }
+        MakeButton("Main Page") { onMainRequested() }
     }
 
 }

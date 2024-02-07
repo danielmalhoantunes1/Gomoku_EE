@@ -33,10 +33,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.isel.pdm.gomoku_ee.GamePlayInputModel
+import pt.isel.pdm.gomoku_ee.MakeButton
 import java.util.UUID
 
 @Composable
 fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
+    val startt = System.currentTimeMillis()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,6 +49,7 @@ fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "${startt - System.currentTimeMillis()} ms", fontSize = 24.sp, color = Color.White) //still wrong
         CurrentTurn(game)
         GomokuBoard(game.board) { row, col ->
             val input = GamePlayInputModel(
@@ -105,7 +108,7 @@ fun GomokuBoard(board: Board, onCellClicked: (row: Int, col: Int) -> Unit) {
 
 @Composable
 fun Cell(stone: CellState, cellSize: Dp, boardSize: Int, onClick: () -> Unit) {
-    val boxSize = if (boardSize == 15) 20.dp else 15.dp
+    val boxSize = 20.dp
     Box(
         modifier = Modifier
             .size(cellSize)

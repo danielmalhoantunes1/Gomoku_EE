@@ -1,5 +1,6 @@
 package pt.isel.pdm.gomoku_ee.Game
 
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,21 +23,9 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(
-    onPlay: (GamePlayInputModel) -> Unit = {},
-    onMainRequested: () -> Unit = {}
+    game: Game,
+    onPlay: (GamePlayInputModel) -> Unit = {}
 ) {
-    var game by remember {
-        mutableStateOf(
-            Game(
-                id = UUID.randomUUID(),
-                board = Board.create(15),
-                state = GameState.STARTING,
-                playerB = 1,
-                playerW = 2,
-                winner = 0
-            )
-        )
-    }
     Gomoku_EETheme {
         Scaffold(
             modifier = Modifier
@@ -49,7 +39,6 @@ fun GameScreen(
                     .fillMaxSize()
             ) {
                 GameView(game) { input -> onPlay(input) }
-                MakeButton(text = "Main Menu") { onMainRequested() }
             }
         }
     }

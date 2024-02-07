@@ -12,17 +12,27 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import pt.isel.pdm.gomoku_ee.GamePlayInputModel
 import pt.isel.pdm.gomoku_ee.LoadState
 import pt.isel.pdm.gomoku_ee.resetToIdle
 import java.util.UUID
 
-class GameViewModel(private val service: GamesService) : ViewModel() {
+class GameViewModel : ViewModel() {
 
     companion object {
-        fun factory(service: GamesService) = viewModelFactory {
-            initializer { GameViewModel(service) }
+        fun factory() = viewModelFactory {
+            initializer { GameViewModel() }
         }
     }
+
+    var gameBoard by mutableStateOf(Game(
+            id = UUID.randomUUID(),
+            board = Board.create(15),
+            state = GameState.STARTING,
+            playerB = 1,
+            playerW = 2,
+            winner = 0
+    ))
 
     private val errorFlow = MutableStateFlow<LoadState<String>>(LoadState.Idle)
 
@@ -31,6 +41,21 @@ class GameViewModel(private val service: GamesService) : ViewModel() {
     private val gameFlow: MutableStateFlow<LoadState<Game>> = MutableStateFlow(LoadState.Idle)
 
     private val gameIdFlow: MutableStateFlow<LoadState<String>> = MutableStateFlow(LoadState.Idle)
+
+    private fun paramsToGridValues(row: Int, col: Char) = Pair(row - 1, col.lowercaseChar() - 'A' - 32)
+
+    fun play(input: GamePlayInputModel, game: Game) {
+        if (game.state != GameState.FINISHED) {
+            val gridValues = paramsToGridValues(input.row, input.col)
+            val turn = game.board.getCurrTurn()
+            gameBoard = gameBoard.processTurn(
+                gridValues.first,
+                gridValues.second,
+                CellState.fromChar(turn),
+                CellState.fromChar(turn).getNextTurn()
+            )
+        }
+    }
 
     val error: Flow<LoadState<String>>
         get() = errorFlow.asStateFlow()
