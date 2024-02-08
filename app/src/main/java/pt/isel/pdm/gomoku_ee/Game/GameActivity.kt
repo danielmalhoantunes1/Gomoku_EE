@@ -40,7 +40,8 @@ class GameActivity : ComponentActivity() {
                 ) {
                     GameScreen(
                         game = viewModel.gameBoard,
-                        onPlay = { input -> viewModel.play(input, viewModel.gameBoard) }
+                        onPlay = { input -> viewModel.play(input, viewModel.gameBoard) },
+                        onMainRequested = { MainActivity.navigateTo(this)}
                     )
                 }
             }

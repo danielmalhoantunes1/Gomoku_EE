@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,13 +34,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import pt.isel.pdm.gomoku_ee.GamePlayInputModel
-import pt.isel.pdm.gomoku_ee.MakeButton
 import java.util.UUID
 
 @Composable
 fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
-    val startt = System.currentTimeMillis()
+    var startt by remember { mutableStateOf(0) }
+    var isRunning by remember { mutableStateOf(true) }
+    LaunchedEffect(isRunning) {
+        while (isRunning) {
+            delay(1000) // Delay de 1 segundo
+            startt++
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +58,7 @@ fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "${startt - System.currentTimeMillis()} ms", fontSize = 24.sp, color = Color.White) //still wrong
+        Text(text = "$startt", color = Color.White)
         CurrentTurn(game)
         GomokuBoard(game.board) { row, col ->
             val input = GamePlayInputModel(

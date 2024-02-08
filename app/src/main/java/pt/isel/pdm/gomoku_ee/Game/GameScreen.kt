@@ -24,7 +24,8 @@ import java.util.UUID
 @Composable
 fun GameScreen(
     game: Game,
-    onPlay: (GamePlayInputModel) -> Unit = {}
+    onPlay: (GamePlayInputModel) -> Unit = {},
+    onMainRequested: () -> Unit = { }
 ) {
     Gomoku_EETheme {
         Scaffold(
@@ -38,6 +39,7 @@ fun GameScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
+                MakeButton(text = "Main Page") { onMainRequested()}
                 GameView(game) { input -> onPlay(input) }
             }
         }
