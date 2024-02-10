@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,24 +32,20 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import pt.isel.pdm.gomoku_ee.GamePlayInputModel
+import pt.isel.pdm.gomoku_ee.MakeButton
 import java.util.UUID
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
-    var startt by remember { mutableStateOf(0) }
-    var isRunning by remember { mutableStateOf(true) }
-    LaunchedEffect(isRunning) {
-        while (isRunning) {
-            delay(1000) // Delay de 1 segundo
-            startt++
-        }
-    }
+fun GameView(game: Game, startt: Int,onMainRequested: () -> Unit = {}, onUpdate: (GamePlayInputModel) -> Unit = {}) {
+    var fav by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +64,52 @@ fun GameView(game: Game, onUpdate: (GamePlayInputModel) -> Unit = {}) {
                 col = 'a'.plus(col)
             )
             onUpdate(input)
+            }
+        if (game.state == GameState.FINISHED) {
+            Button(onClick = {fav = true}) {Text("Add Game to Favourites")}
+            if (fav) {
+                var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+                var textFieldValue2 by remember { mutableStateOf(TextFieldValue()) }
+                var text by remember { mutableStateOf("")}
+                var text2 by remember { mutableStateOf("")}
+                TextField(
+                    value = textFieldValue,
+                    onValueChange = { textFieldValue = it },
+                    label = { Text("Game title") }
+                )
+                TextField(
+                    value = textFieldValue2,
+                    onValueChange = { textFieldValue2 = it },
+                    label = { Text("Name of Opponent") }
+                )
+                Button(onClick = {text = textFieldValue.text; text2 = textFieldValue2.text}) {
+                    //DoHadToFavourites
+                }}
         }
+        /*else {
+            MakeButton(text = "Main Page") { onMainRequested()}
+            CurrentTurn(game = game)
+            Button(onClick = { fav = true }) {
+                Text("Add to favourites")
+            }
+            if (fav) {
+                var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+                var text by remember { mutableStateOf("")}
+                TextField(
+                    value = textFieldValue,
+                    onValueChange = { textFieldValue = it },
+                    label = { Text("Name title") }
+                )
+                TextField(
+                    value = textFieldValue,
+                    onValueChange = { textFieldValue = it },
+                    label = { Text("Name of Opponent") }
+                )
+                Button(onClick = { text = textFieldValue.text}) {
+                    Text("Confirm")
+                }
+            }
+        }*/
     }
 }
 
@@ -168,7 +211,7 @@ fun DrawLines(boardSize: Int) {
     }
 }
 
-@Composable
+/*@Composable
 @Preview
 fun GameViewPreview() {
     var game by remember {
@@ -190,3 +233,4 @@ fun GameViewPreview() {
         game = game.copy(board = newBoard)
     }
 }
+*/

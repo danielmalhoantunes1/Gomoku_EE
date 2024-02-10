@@ -34,6 +34,10 @@ class GameViewModel : ViewModel() {
             winner = 0
     ))
 
+    fun surrender() {
+        gameBoard = gameBoard.surrender(gameBoard)
+    }
+
     private val errorFlow = MutableStateFlow<LoadState<String>>(LoadState.Idle)
 
     private val createGameFlow: MutableStateFlow<LoadState<String>> = MutableStateFlow(LoadState.Idle)

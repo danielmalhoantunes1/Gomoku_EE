@@ -104,21 +104,6 @@ data class Board(
     companion object {
         fun create(size: Int) =
             Board(Array(size) { Array(size) { CellState.EMPTY } }, size, 'B')
-
-        fun fromString(s: String): Board {
-            val boardValues = s.split('/')
-            val size = boardValues[1].toInt()
-            require(boardValues[0].length == size * size)
-            val boardState = Array(size) { Array(size) { CellState.EMPTY } }
-            for (row in 0 until size)
-                for (col in 0 until size)
-                    boardState[row][col] = CellState.fromChar(s[row * size + col])
-            return Board(
-                boardState,
-                size,
-                boardValues[2].first()
-            )
-        }
     }
 
     override fun toString(): String =
@@ -160,6 +145,16 @@ data class Game(
         )
         return updatedGame
     }
+
+    fun surrender(game: Game): Game {
+        val winner = if (game.board.getCurrTurn() == 'B') 2 else 1
+        val updatedGame = game.copy(
+            state = GameState.FINISHED,
+            winner = winner
+        )
+        return updatedGame
+    }
+
 
     private fun drawGame(currTurn: CellState, nextTurn: Char, row: Int, col: Int): Game {
         val updatedGame = copy(board = this.board.mutate(currTurn, nextTurn, row, col), state = GameState.FINISHED)
