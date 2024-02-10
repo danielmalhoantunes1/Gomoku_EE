@@ -27,21 +27,10 @@ import java.util.UUID
 @Composable
 fun GameScreen(
     game: Game,
+    timer: Long,
     onPlay: (GamePlayInputModel) -> Unit = {},
-    onMainRequested: () -> Unit = {},
-    onSurrender: () -> Unit = {}
+    onMainRequested: () -> Unit = {}
 ) {
-    var timer by remember { mutableStateOf(0) }
-    var isRunning by remember { mutableStateOf(true) }
-    LaunchedEffect(isRunning) {
-        while (isRunning) {
-            delay(1000) // Delay de 1 segundo
-            if (timer >= 30) {
-                onSurrender()
-                isRunning = false
-            }else timer++
-        }
-    }
 
     Gomoku_EETheme {
         Scaffold(
@@ -55,7 +44,7 @@ fun GameScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                GameView(game, timer, onMainRequested) { input -> onPlay(input); timer = 0;  }
+                GameView(game, timer, onMainRequested) { input -> onPlay(input)}
             }
         }
     }

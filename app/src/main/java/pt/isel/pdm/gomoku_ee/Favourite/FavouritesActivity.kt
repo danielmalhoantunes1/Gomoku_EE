@@ -27,6 +27,7 @@ import pt.isel.pdm.gomoku_ee.Game.GameViewModel
 import pt.isel.pdm.gomoku_ee.MainActivity
 import pt.isel.pdm.gomoku_ee.MakeButton
 import pt.isel.pdm.gomoku_ee.R
+//import pt.isel.pdm.gomoku_ee.Replay.ReplayActivity
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
 import java.time.LocalDate
 
@@ -52,7 +53,8 @@ class FavouriteActivity : ComponentActivity() {
                 ) {
                     FavouriteScreen(
                         list = viewModel.favouriteGamesList,
-                        onMainRequested = { MainActivity.navigateTo(this) }
+                        onMainRequested = { MainActivity.navigateTo(this) },
+                        //onReplayRequested = { favextra -> ReplayActivity.navigateTo(this, favextra) }
                     )
                 }
             }

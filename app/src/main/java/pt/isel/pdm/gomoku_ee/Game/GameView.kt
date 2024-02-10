@@ -44,7 +44,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameView(game: Game, timer: Int,onMainRequested: () -> Unit = {}, onUpdate: (GamePlayInputModel) -> Unit = {}) {
+fun GameView(game: Game, timer: Long, onMainRequested: () -> Unit = {}, onUpdate: (GamePlayInputModel) -> Unit = {}) {
     var fav by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier

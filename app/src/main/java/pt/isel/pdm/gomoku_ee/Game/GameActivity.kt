@@ -36,6 +36,7 @@ class GameActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.startTimer()
         setContent {
             Gomoku_EETheme {
                 Surface(
@@ -44,9 +45,9 @@ class GameActivity : ComponentActivity() {
                 ) {
                     GameScreen(
                         game = viewModel.gameBoard,
+                        timer = viewModel.time,
                         onPlay = { input -> viewModel.play(input, viewModel.gameBoard) },
-                        onMainRequested = { MainActivity.navigateTo(this)},
-                        onSurrender = { viewModel.surrender() }
+                        onMainRequested = { MainActivity.navigateTo(this)}
                     )
                 }
             }
