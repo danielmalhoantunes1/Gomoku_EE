@@ -1,10 +1,12 @@
 package pt.isel.pdm.gomoku_ee.Game
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,10 +18,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import pt.isel.pdm.gomoku_ee.Favourite.FavouriteViewmodel
 import pt.isel.pdm.gomoku_ee.MainActivity
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
 import java.util.UUID
 
+@RequiresApi(Build.VERSION_CODES.O)
 class GameActivity : ComponentActivity() {
     private val viewModel by viewModels<GameViewModel>(
         factoryProducer = { GameViewModel.factory() }
@@ -50,6 +54,7 @@ class GameActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun GamePreview() {

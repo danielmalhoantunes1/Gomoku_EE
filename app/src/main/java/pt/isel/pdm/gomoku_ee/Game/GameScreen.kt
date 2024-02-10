@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
+import pt.isel.pdm.gomoku_ee.Favourite.FavouriteGame
 import pt.isel.pdm.gomoku_ee.GamePlayInputModel
 import pt.isel.pdm.gomoku_ee.MakeButton
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
@@ -30,15 +31,15 @@ fun GameScreen(
     onMainRequested: () -> Unit = {},
     onSurrender: () -> Unit = {}
 ) {
-    var startt by remember { mutableStateOf(0) }
+    var timer by remember { mutableStateOf(0) }
     var isRunning by remember { mutableStateOf(true) }
     LaunchedEffect(isRunning) {
         while (isRunning) {
             delay(1000) // Delay de 1 segundo
-            if (startt >= 30) {
+            if (timer >= 30) {
                 onSurrender()
                 isRunning = false
-            }else startt++
+            }else timer++
         }
     }
 
@@ -54,7 +55,7 @@ fun GameScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                GameView(game, startt, onMainRequested) { input -> onPlay(input) }
+                GameView(game, timer, onMainRequested) { input -> onPlay(input); timer = 0;  }
             }
         }
     }

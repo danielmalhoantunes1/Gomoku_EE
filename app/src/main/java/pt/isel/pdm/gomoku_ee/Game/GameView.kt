@@ -44,7 +44,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameView(game: Game, startt: Int,onMainRequested: () -> Unit = {}, onUpdate: (GamePlayInputModel) -> Unit = {}) {
+fun GameView(game: Game, timer: Int,onMainRequested: () -> Unit = {}, onUpdate: (GamePlayInputModel) -> Unit = {}) {
     var fav by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -56,16 +56,8 @@ fun GameView(game: Game, startt: Int,onMainRequested: () -> Unit = {}, onUpdate:
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "$startt", color = Color.White)
-        CurrentTurn(game)
-        GomokuBoard(game.board) { row, col ->
-            val input = GamePlayInputModel(
-                row = row + 1,
-                col = 'a'.plus(col)
-            )
-            onUpdate(input)
-            }
-        if (game.state == GameState.FINISHED) {
+        Button(onClick = { onMainRequested() }) { Text("Main Page") }
+        if (game.isFinished()) {
             Button(onClick = {fav = true}) {Text("Add Game to Favourites")}
             if (fav) {
                 var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
@@ -83,33 +75,18 @@ fun GameView(game: Game, startt: Int,onMainRequested: () -> Unit = {}, onUpdate:
                     label = { Text("Name of Opponent") }
                 )
                 Button(onClick = {text = textFieldValue.text; text2 = textFieldValue2.text}) {
+                    Text("Confirm")
                     //DoHadToFavourites
                 }}
+        }else Text(text = "Turn time left: ${30-timer}s", color = Color.White)
+        CurrentTurn(game)
+        GomokuBoard(game.board) { row, col ->
+            val input = GamePlayInputModel(
+                row = row + 1,
+                col = 'a'.plus(col)
+            )
+            onUpdate(input)
         }
-        /*else {
-            MakeButton(text = "Main Page") { onMainRequested()}
-            CurrentTurn(game = game)
-            Button(onClick = { fav = true }) {
-                Text("Add to favourites")
-            }
-            if (fav) {
-                var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
-                var text by remember { mutableStateOf("")}
-                TextField(
-                    value = textFieldValue,
-                    onValueChange = { textFieldValue = it },
-                    label = { Text("Name title") }
-                )
-                TextField(
-                    value = textFieldValue,
-                    onValueChange = { textFieldValue = it },
-                    label = { Text("Name of Opponent") }
-                )
-                Button(onClick = { text = textFieldValue.text}) {
-                    Text("Confirm")
-                }
-            }
-        }*/
     }
 }
 

@@ -118,7 +118,9 @@ data class Game(
     val playerW: Int,
     val winner: Int? = null
 ) {
-    fun isFinished() = state == GameState.FINISHED
+    fun isFinished():Boolean{
+        return state == GameState.FINISHED
+    }
 
     fun processTurn(
         row: Int,
