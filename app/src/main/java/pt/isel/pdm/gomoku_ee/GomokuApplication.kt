@@ -1,16 +1,13 @@
 package pt.isel.pdm.gomoku_ee
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
+import android.app.Application
+import pt.isel.pdm.gomoku_ee.Service.GomokuFakeService
+import pt.isel.pdm.gomoku_ee.Service.GomokuService
 
-class GomokuApplication {
+interface GomokuDependenciesContainer {
+    val gomokuService : GomokuService
 }
 
-/*@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Gomoku_EETheme {
-        MainScreen()
-    }
-}*/
+class GomokuApplication: Application(), GomokuDependenciesContainer {
+    override val gomokuService: GomokuService = GomokuFakeService()
+}

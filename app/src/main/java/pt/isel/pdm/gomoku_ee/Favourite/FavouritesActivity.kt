@@ -7,106 +7,58 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import pt.isel.pdm.gomoku_ee.Game.GameScreen
-import pt.isel.pdm.gomoku_ee.Game.GameViewModel
-import pt.isel.pdm.gomoku_ee.MainActivity
-import pt.isel.pdm.gomoku_ee.MakeButton
-import pt.isel.pdm.gomoku_ee.R
-//import pt.isel.pdm.gomoku_ee.Replay.ReplayActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import pt.isel.pdm.gomoku_ee.GomokuDependenciesContainer
+import pt.isel.pdm.gomoku_ee.Domain.LoadState
+import pt.isel.pdm.gomoku_ee.Main.MainActivity
+import pt.isel.pdm.gomoku_ee.Replay.ReplayActivity
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 class FavouriteActivity : ComponentActivity() {
-    private val viewModel by viewModels<FavouriteViewmodel>(
-        factoryProducer = { FavouriteViewmodel.factory() }
-    )
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, FavouriteActivity::class.java)
             origin.startActivity(intent)
         }
     }
+
+    private val dependecies by lazy {
+        application as GomokuDependenciesContainer
+    }
+
+    private val viewModel by viewModels<FavouriteViewmodel>(
+        factoryProducer = { FavouriteViewmodel.factory(dependecies.gomokuService) }
+    )
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.getFavourites()
+        }
         setContent {
             Gomoku_EETheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val currentFavourites by viewModel.favourites.collectAsState(initial = LoadState.Idle)
                     FavouriteScreen(
-                        list = viewModel.favouriteGamesList,
+                        list = currentFavourites,
                         onMainRequested = { MainActivity.navigateTo(this) },
-                        //onReplayRequested = { favextra -> ReplayActivity.navigateTo(this, favextra) }
+                        onReplayRequested = { favouriteinfo -> ReplayActivity.navigateTo(this, FavouriteExtra(favouriteinfo)) }
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun FavouriteScreen(
-    list: List<FavouriteGame>,
-    onMainRequested: () -> Unit = { },
-    onReplayRequested: (FavouriteGame) -> Unit = { }
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(id = R.drawable.background_wood),
-                contentScale = ContentScale.FillBounds
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        list.forEachIndexed { index, favouriteGame ->
-            Button(onClick = {onReplayRequested(favouriteGame)}, modifier = Modifier.fillMaxWidth()) {
-                Text("Game name: ${favouriteGame.name} | Opponent: ${favouriteGame.opponent} | \n Date: ${favouriteGame.date}")
-            }
-        }
-        MakeButton("Main Page") { onMainRequested() }
-    }
-}
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun FavouritePreview() {
-    val list: List<FavouriteGame>
-    list = mutableListOf(
-        FavouriteGame(
-            name = "Game1",
-            opponent = "Opponent1",
-            date = LocalDate.now(),
-            plays = emptyArray()
-        ),
-        FavouriteGame(
-            name = "Game2",
-            opponent = "Opponent2",
-            date = LocalDate.now(),
-            plays = emptyArray()
-        )
-    )
-    Gomoku_EETheme {
-        FavouriteScreen(list)
     }
 }

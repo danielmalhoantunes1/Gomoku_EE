@@ -1,4 +1,4 @@
-package pt.isel.pdm.gomoku_ee
+package pt.isel.pdm.gomoku_ee.Domain
 
 import java.lang.IllegalStateException
 
@@ -7,7 +7,6 @@ sealed class LoadState<out T> {
     object Loading : LoadState<Nothing>()
     data class Loaded<T>(val result: Result<T>) : LoadState<T>()
 }
-fun <T> LoadState<T>.resetToIdle() = LoadState.Idle
 fun <T> LoadState<T>.loading() = LoadState.Loading
 fun <T> LoadState<T>.complete(result: Result<T>) = LoadState.Loaded(result)
 

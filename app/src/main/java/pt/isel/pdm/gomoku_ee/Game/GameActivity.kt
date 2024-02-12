@@ -11,17 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import pt.isel.pdm.gomoku_ee.Favourite.FavouriteViewmodel
-import pt.isel.pdm.gomoku_ee.MainActivity
+import pt.isel.pdm.gomoku_ee.AddFavourite.AddFavouriteActivity
+import pt.isel.pdm.gomoku_ee.Main.MainActivity
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
-import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
 class GameActivity : ComponentActivity() {
@@ -46,8 +40,9 @@ class GameActivity : ComponentActivity() {
                     GameScreen(
                         game = viewModel.gameBoard,
                         timer = viewModel.time,
-                        onPlay = { input -> viewModel.play(input, viewModel.gameBoard) },
-                        onMainRequested = { MainActivity.navigateTo(this)}
+                        onPlay = { input -> viewModel.play(input, viewModel.gameBoard)},
+                        onMainRequested = { MainActivity.navigateTo(this)},
+                        onAddToFavourites = { AddFavouriteActivity.navigateTo(this, viewModel.playList)}
                     )
                 }
             }

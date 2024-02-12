@@ -1,4 +1,4 @@
-package pt.isel.pdm.gomoku_ee
+package pt.isel.pdm.gomoku_ee.Main
 
 import android.content.Intent
 import android.os.Build
@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import pt.isel.pdm.gomoku_ee.Favourite.FavouriteActivity
 import pt.isel.pdm.gomoku_ee.Game.GameActivity
+import pt.isel.pdm.gomoku_ee.R
 import pt.isel.pdm.gomoku_ee.ui.theme.Gomoku_EETheme
 
 class MainActivity : ComponentActivity() {
