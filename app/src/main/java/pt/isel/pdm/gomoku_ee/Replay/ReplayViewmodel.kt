@@ -53,6 +53,7 @@ class ReplayViewmodel(private val plays: Array<Pair<Int, Char>>) : ViewModel() {
         val gridValues = paramsToGridValues(input.first, input.second)
         val turn = game.board.getCurrTurn()
         gameBoard = gameBoard.unupdateGame(
+            lastpieceplaced,
             CellState.fromChar(turn),
             CellState.fromChar(turn).getNextTurn(),
             gridValues.first,

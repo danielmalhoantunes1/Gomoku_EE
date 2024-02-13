@@ -29,8 +29,8 @@ data class Game(
         return copy(board = board.mutate(currTurn, nextTurn, row, col))
     }
 
-    fun unupdateGame(currTurn: CellState, nextTurn: Char, row: Int, col: Int): Game {
-        return copy(board = board.unmutate(currTurn, nextTurn, row, col))
+    fun unupdateGame(lastpieceplaced: Boolean,currTurn: CellState, nextTurn: Char, row: Int, col: Int): Game {
+        return copy(board = board.unmutate(lastpieceplaced, currTurn, nextTurn, row, col))
     }
 
     private fun winGame(currTurn: CellState, row: Int, col: Int): Game {

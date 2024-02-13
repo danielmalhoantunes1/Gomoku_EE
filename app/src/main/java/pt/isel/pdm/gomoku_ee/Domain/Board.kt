@@ -12,10 +12,10 @@ data class Board(
         return Board(newBoardCells, size, nextTurn)
     }
 
-    fun unmutate(currTurn: CellState, nextTurn: Char, row: Int, col: Int): Board {
+    fun unmutate(lastpieceplaced: Boolean ,currTurn: CellState, nextTurn: Char, row: Int, col: Int): Board {
         val newBoardCells = Array(size) { r -> Array(size) { c -> cells[r][c] } }
         newBoardCells[row][col] = CellState.EMPTY
-        return Board(newBoardCells, size, nextTurn)
+        return if(lastpieceplaced) Board(newBoardCells, size, currTurn.char) else Board(newBoardCells, size, nextTurn)
     }
 
     private fun getNumberOfCells (): Int {
