@@ -60,9 +60,6 @@ fun ReplayScreen(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             MakePrevButton(text = "Prev", idx = idx, lastpieceplaced = lastpieceplaced, onLast = { onLast() }) { onPrev() }
-
-            Text(text = "${favouriteInfo.plays[idx].first} ${favouriteInfo.plays[idx].second} $idx size=${favouriteInfo.plays.size}", color = Color.White)
-
             MakeNextButton(text = "Next", lastpieceplaced = lastpieceplaced) { onNext() }
         }
     }
